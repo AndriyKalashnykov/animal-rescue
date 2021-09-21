@@ -1,0 +1,123 @@
+import org.springframework.boot.buildpack.platform.build.PullPolicy.*
+
+plugins {
+	id 'org.springframework.boot' version '2.5.4'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+	id 'jacoco'
+}
+
+group = 'io.spring.cloud.samples.animalrescue'
+version = '0.0.1-SNAPSHOT'
+
+java.sourceCompatibility = JavaVersion.VERSION_11
+java.targetCompatibility = JavaVersion.VERSION_11
+
+//applicationDefaultJvmArgs = ["-Djdk.tls.client.protocols=TLSv1.2"]
+
+configurations {
+	developmentOnly
+	runtimeClasspath {
+		extendsFrom developmentOnly
+	}
+
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+	maven { url = uri("https://repo.spring.io/milestone") }
+	maven { url = uri("https://repo.spring.io/snapshot") }
+}
+
+dependencies {
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
+	implementation("org.springframework:spring-context-indexer")
+	annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+
+	implementation "org.springframework.security:spring-security-web"
+
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation "org.springframework.security:spring-security-oauth2-resource-server"
+	implementation "org.springframework.security:spring-security-oauth2-jose"
+ 	implementation("io.pivotal.cfenv:java-cfenv-boot:2.1.1.RELEASE")
+
+    runtimeOnly 'com.h2database:h2'
+
+	testImplementation('org.springframework.security:spring-security-test')
+	testImplementation('org.springframework.boot:spring-boot-starter-test') {
+		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+	}
+	testImplementation 'io.projectreactor:reactor-test'
+ 	testImplementation("io.pivotal.cfenv:java-cfenv-test-support:2.1.1.RELEASE")
+}
+
+springBoot {
+	buildInfo()
+}
+
+ext {
+	set('springCloudVersion', "Hoxton.SR12")
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
+}
+
+// https://docs.spring.io/spring-boot/docs/current/gradle-plugin/reference/htmlsingle/
+
+tasks.bootJar {
+//	classpath = ""
+	layered {
+		enabled = true
+	}
+}
+
+tasks.bootBuildImage {
+	def defprofile = '''default-zzz'''
+	pullPolicy = "IF_NOT_PRESENT"
+	cleanCache = false
+	verboseLogging = true
+	imageName = "andriykalashnykov/animal-rescue-backend:latest"
+
+	environment = [
+			"BP_JVM_VERSION" : "11.*",
+			"BP_JVM_TYPE": "JRE",
+			"BP_DEBUG_ENABLED" : "false",
+			"BPE_DELIM_JAVA_TOOL_OPTIONS" : " ",
+			"BPE_APPEND_JAVA_TOOL_OPTIONS" : "-XX:+HeapDumpOnOutOfMemoryError -XX:UseSSE=2 -Dspring.profiles.active=default"
+//			"SPRING_PROFILES_ACTIVE" : "default-zzz"
+	]
+    builder = "paketobuildpacks/builder:base"
+	buildpacks = [
+			"gcr.io/paketo-buildpacks/adopt-openjdk:latest",
+			"gcr.io/paketo-buildpacks/java:latest"
+	]
+}
+
+test {
+	useJUnitPlatform()
+	testLogging {
+		exceptionFormat = "full"
+		events = ["passed", "skipped", "failed"]
+	}
+}
+
+jacocoTestReport {
+	dependsOn test
+    reports {
+        xml.enabled true
+		xml.destination new File("${buildDir}/reports/jacoco/report.xml")
+		html.enabled false
+		csv.enabled false
+    }
+}

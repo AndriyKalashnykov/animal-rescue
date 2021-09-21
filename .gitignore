@@ -1,0 +1,19 @@
+.DS_Store
+.gradle
+*.yaml
+**/bin/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+out/
+scripts/out/
+**/secrets/
+
+### VS Code ###
+.project
+.settings
+
+frontend/npm-cache/
