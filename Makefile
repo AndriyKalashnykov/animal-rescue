@@ -78,8 +78,7 @@ build-frontend: check
 
 #build-frontend-image: @ Build frontend Docker image
 build-frontend-image: build-frontend
-	@pack build andriykalashnykov/animal-rescue-frontend:latest --env BP_NODE_RUN_SCRIPTS=build --env NODE_VERBOSE=true --env BP_NODE_VERSION=14.17.6 --env NODE_ENV=development --builder=paketobuildpacks/builder:base --buildpack gcr.io/paketo-buildpacks/nodejs:latest --path=./frontend
-#	@docker build -t andriykalashnykov/animal-rescue-frontend:latest ./frontend
+	@pack build andriykalashnykov/animal-rescue-frontend:latest --env BP_NODE_RUN_SCRIPTS=build --env NODE_VERBOSE=true --env BP_NODE_VERSION=14.17.6 --builder=paketobuildpacks/builder:base  --path=./frontend
 
 #start-app: @ Start frontend + backend
 start-app: check
