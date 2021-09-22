@@ -41,7 +41,7 @@ jobs:
           ./scripts/local.sh e2e --quiet
           ./scripts/local.sh stop
 
-  lint:
+  frontend-e2e-lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2.3.4
