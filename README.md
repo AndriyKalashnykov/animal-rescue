@@ -1,5 +1,5 @@
 # Animal Rescue
-![Test All](https://github.com/spring-cloud-services-samples/animal-rescue/workflows/Test%20All/badge.svg?branch=master)
+[![Test All](https://github.com/AndriyKalashnykov/animal-rescue/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/AndriyKalashnykov/animal-rescue/actions/workflows/main.yml)
 
 Sample app for VMware's Spring Cloud Gateway commercial products. Features we demonstrate with this sample app:
 
