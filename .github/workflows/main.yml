@@ -66,12 +66,12 @@ jobs:
 
   publish:
     runs-on: ubuntu-latest
-    needs: [ backend-test, e2e-test, lint ]
+    needs: [ backend-test, e2e-test, frontend-e2e-lint ]
     if: |
       github.ref == 'refs/heads/main' &&
       needs.backend-test.result == 'success' &&
       needs.e2e-test.result == 'success' &&
-      needs.lint.result == 'success'
+      needs.frontend-e2e-lint.result == 'success'
     steps:
       - uses: actions/checkout@v2.3.4
 
