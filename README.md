@@ -179,10 +179,10 @@ You can find an e2e test output video showing the whole journey in `./e2e/cypres
 ./scripts/local.sh e2e
 ```
 
-More detail about the e2e testing framework can be found at [cypress api doc](https://docs.cypress.io/api/api/table-of-contents.html) 
+More detail about the e2e testing framework can be found at [Cypress API documentation](https://docs.cypress.io/api/api/table-of-contents.html) 
 
 ### CI
 
 #### GitHub Actions
 
-GitHub Actions run all checks for the `master` branch and all PR requests. All workflow configuration can be found in `.github/workflows`.
+GitHub Actions run all checks for the `main` branch and all PR requests. All workflow configuration can be found in [`.github/workflows/main.yml`](https://github.com/AndriyKalashnykov/animal-rescue/blob/6741f90a579f331dbc3153ab6c56d8b684d5a05f/.github/workflows/main.yml)
