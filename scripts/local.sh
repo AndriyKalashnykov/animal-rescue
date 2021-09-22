@@ -46,6 +46,7 @@ startBackend() {
     ./gradlew :backend:bootRun > "$ROOT_DIR/scripts/out/backend_output.log" &
   else
     ./gradlew :backend:bootRun &
+#    curl -s http://localhost:8080/actuator/health | jq .
   fi
 }
 
