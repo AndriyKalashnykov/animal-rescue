@@ -6,6 +6,10 @@ import * as PropTypes from "prop-types";
 export default class AnimalCards extends React.Component {
 
     render() {
+
+        let data = Array.from(this.props.animals);
+        console.log(this.props.animals);
+        console.log(data);
         const cards = this.props.animals.map(animal => (
             <AnimalCard animal={animal}
                         key={animal.id}

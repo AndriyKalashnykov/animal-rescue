@@ -15,10 +15,13 @@ Sample app for VMware's Spring Cloud Gateway commercial products. Features we de
 ## Table of Contents
 
 * [Deploy to Kubernetes](#deploy-to-kubernetes)
-* [Deploy to Tanzu Application Service](#deploy-to-tanzu-application-service)
 * [Special frontend config related to gateway](#special-frontend-config-related-to-gateway)
 * [Gateway and Animal Rescue application features](#gateway-and-animal-rescue-application-features)
 * [Development](#development)
+
+### Pre-requisites
+
+* [docker-compose](https://docs.docker.com/compose/install/)
 
 ## Deploy to Kubernetes
 
@@ -186,3 +189,7 @@ More detail about the e2e testing framework can be found at [Cypress API documen
 #### GitHub Actions
 
 GitHub Actions run all checks for the `main` branch and all PR requests. All workflow configuration can be found in [`.github/workflows/main.yml`](https://github.com/AndriyKalashnykov/animal-rescue/blob/6741f90a579f331dbc3153ab6c56d8b684d5a05f/.github/workflows/main.yml)
+
+### Mainteiners
+
+[Andriy Kalashnykov](https://github.com/AndriyKalashnykov)

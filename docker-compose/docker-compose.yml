@@ -1,0 +1,59 @@
+version: "3.8"
+
+services:
+
+#  backend:
+#    image: andriykalashnykov/animal-rescue-backend:latest
+#    restart: unless-stopped
+#    hostname: backend
+#    container_name: backend
+#    healthcheck:
+#      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator"]
+#      interval: 30s
+#      timeout: 10s
+#      retries: 5
+#    ports:
+#      - "8080:8080"
+#    environment:
+#      - DEBUG=false
+#    networks:
+#      ldap_net:
+#        ipv4_address: 172.28.1.10
+#    logging:
+#      driver: "json-file"
+#      options:
+#        max-size: "100M"
+#        max-file: "5"
+
+  frontend:
+    image: andriykalashnykov/animal-rescue-frontend:latest
+    restart: unless-stopped
+    hostname: frontend
+    container_name: frontend
+#    links:
+#      - backend
+#    depends_on:
+#      - backend
+#    command: ["./wait-for-it.sh", "backend:8080"]
+    ports:
+      - "3000:8080"
+    environment:
+      - DEBUG=true
+      - PORT=8080
+      - REACT_APP_LOGIN_URI=http://localhost:8080/login
+      - REACT_APP_LOGOUT_URI=http://localhost:8080/logout
+    networks:
+      ldap_net:
+        ipv4_address: 172.28.1.11
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100M"
+        max-file: "5"
+
+networks:
+  ldap_net:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.28.0.0/16

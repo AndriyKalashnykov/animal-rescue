@@ -20,7 +20,7 @@ help:
 	@echo
 	@echo "Commands :"
 	@echo
-	@grep -E '[a-zA-Z\.\-]+:.*?@ .*$$' $(MAKEFILE_LIST)| tr -d '#' | awk 'BEGIN {FS = ":.*?@ "}; {printf "\033[32m%-21s\033[0m - %s\n", $$1, $$2}'
+	@grep -E '[a-zA-Z\.\-]+:.*?@ .*$$' $(MAKEFILE_LIST)| tr -d '#' | awk 'BEGIN {FS = ":.*?@ "}; {printf "\033[32m%-22s\033[0m - %s\n", $$1, $$2}'
 
 deps-check:
 	@. $(SDKMAN)
@@ -37,6 +37,10 @@ NODE_WHICH := $(shell which npm)
 ifeq ($(strip $(NODE_WHICH)),)
 	NODE_EXISTS := @echo "node not found" && exit 1
 endif
+
+# nvm current
+# nvm alias default 14.17.6
+# nvm use 14.17.6
 
 #check: @ Check installed tools
 check: deps-check
@@ -56,8 +60,8 @@ test-backend: check
 	@./gradlew :backend:test
 
 #run-backend: @ Run backend
-run-backend: check stop-backend build-backend
-	@./gradlew :backend:bootRun -x test --args='--spring.profiles.active=default-zzz'
+run-backend: check build-backend
+	@./gradlew :backend:bootRun -x test --args='--spring.profiles.active=default'
 
 #stop-app: @ Stop backend + frontend
 stop-app: check
@@ -78,15 +82,29 @@ build-frontend: check
 
 #build-frontend-image: @ Build frontend Docker image
 build-frontend-image: build-frontend
-	@pack build andriykalashnykov/animal-rescue-frontend:latest --env BP_NODE_RUN_SCRIPTS=build --env NODE_VERBOSE=true --env BP_NODE_VERSION=14.17.6 --builder=paketobuildpacks/builder:base  --path=./frontend
+#	@pack build andriykalashnykov/animal-rescue-frontend:latest --env BP_NODE_RUN_SCRIPTS=build --buildpack gcr.io/paketo-buildpacks/nodejs --env APP_ROOT=build --env BP_NGINX_VERSION=1.21.3 --env PORT=8080 --buildpack paketo-buildpacks/nginx --buildpack paketo-community/staticfile --env BP_NODE_RUN_SCRIPTS=build --env NODE_VERBOSE=true --env BP_NODE_VERSION=14.17.6 --builder=paketobuildpacks/builder:base --path=./frontend
+	@docker build frontend -t andriykalashnykov/animal-rescue-frontend:latest
 
 #start-app: @ Start frontend + backend
-start-app: check
+start-app: check build-backend-image build-frontend
 	@./scripts/local.sh start --quiet
 
 #run-e2e: @ Run e2e: frontend + backend
-run-e2e: check
+run-e2e: check build-backend build-frontend
 	@./scripts/local.sh ci
+
+#start-local-containers: @ Start local containers: frontend + backend
+start-local-containers: check
+	@cd ./docker-compose && docker-compose up
+
+#stop-local-containers: @ Stop local containers: frontend + backend
+stop-local-containers: check
+	@cd ./docker-compose && docker-compose down
 
 test: check
 	$(call my_echo,John Doe,101)
+
+# docker run --rm --interactive --tty --init --env PORT=8080 --entrypoint bash --publish 3000:8080 andriykalashnykov/animal-rescue-frontend:latest
+# http://localhost:3000/rescue/
+
+# wait-on tcp:8080 &&

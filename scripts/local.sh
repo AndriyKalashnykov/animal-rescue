@@ -90,7 +90,7 @@ ci)
   testBackend
   start $QUIET_MODE
   testE2e $QUIET_MODE
-  stop
+#  stop
   ;;
 e2e)
   echo 'make sure you have executed the "start" command'
