@@ -17,7 +17,7 @@ spec:
 #          image: springcloudservices/animal-rescue-backend:latest
           env:
             - name: FRONTEND_URI
-              value: "http://animal-rescue-frontend.animal-rescue.svc.cluster.local/rescue"
+              value: "/rescue"
 #            - name: spring.profiles.active
 #              value: k8s
 #            - name: spring.security.oauth2.resourceserver.jwt.jwk-set-uri

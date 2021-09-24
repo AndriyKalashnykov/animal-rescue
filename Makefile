@@ -139,3 +139,4 @@ test: check
 # http://localhost:3000/rescue/
 # wait-on tcp:8080 && REACT_APP_LOGIN_URI=http://localhost:8080/login REACT_APP_LOGOUT_URI=http://localhost:8080/logout
 #  "proxy": "http://localhost:8080",
+#http://animal-rescue-backend.animal-rescue.svc.cluster.local

@@ -27,7 +27,7 @@ task buildReactApp(type: NpmTask) {
     dependsOn npm_ci
 //    dependsOn npm_build_cache
 
-    args = ['run-script', 'build']
+    args = ['run-script', 'build', '--production']
 
     inputs.dir "src"
     inputs.dir "public"
