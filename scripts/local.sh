@@ -2,6 +2,8 @@
 
 set -euo pipefail
 
+LAUNCH_DIR=$(pwd); SCRIPT_DIR=$(dirname $0); cd $SCRIPT_DIR; SCRIPT_DIR=$(pwd); cd ..; SCRIPT_PARENT_DIR=$(pwd)
+
 readonly ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/.."
 QUIET_MODE="--quiet"
 
@@ -77,6 +79,16 @@ testE2e() {
   cd ..
 }
 
+deploy-k8s() {
+  echo "Deploying to K8s ..."
+  kapp deploy -a animal-rescue -f $SCRIPT_PARENT_DIR/k8s/namespace.yaml,$SCRIPT_PARENT_DIR/backend/k8s/animal-rescue-backend.yaml,$SCRIPT_PARENT_DIR/frontend/k8s/animal-rescue-frontend.yaml --into-ns animal-rescue --diff-changes --yes
+}
+
+undeploy-k8s() {
+  echo "Undeploying from K8s ..."
+  kapp delete -a animal-rescue --yes
+}
+
 trap stop SIGINT
 
 case $1 in
@@ -104,6 +116,12 @@ start)
   ;;
 stop)
   stop
+  ;;
+deploy)
+  deploy-k8s
+  ;;
+undeploy)
+  undeploy-k8s
   ;;
 *)
   echo 'Unknown command. Please specify "init", "backend", "ci", "e2e", "start( --quiet)", or "stop"'

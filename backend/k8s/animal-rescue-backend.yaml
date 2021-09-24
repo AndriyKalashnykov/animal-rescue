@@ -13,15 +13,18 @@ spec:
     spec:
       containers:
         - name: animal-rescue-backend
-          image: springcloudservices/animal-rescue-backend
+          image: andriykalashnykov/animal-rescue-backend:latest
+#          image: springcloudservices/animal-rescue-backend:latest
           env:
-            - name: spring.profiles.active
-              value: k8s
-            - name: spring.security.oauth2.resourceserver.jwt.jwk-set-uri
-              valueFrom:
-                secretKeyRef:
-                  name: sso-credentials
-                  key: jwk-set-uri
+            - name: FRONTEND_URI
+              value: "http://animal-rescue-frontend.animal-rescue.svc.cluster.local/rescue"
+#            - name: spring.profiles.active
+#              value: k8s
+#            - name: spring.security.oauth2.resourceserver.jwt.jwk-set-uri
+#              valueFrom:
+#                secretKeyRef:
+#                  name: sso-credentials
+#                  key: jwk-set-uri
           resources:
             requests:
               memory: "256Mi"
@@ -38,5 +41,6 @@ spec:
   ports:
     - port: 80
       targetPort: 8080
+  type: LoadBalancer
   selector:
     app: animal-rescue-backend

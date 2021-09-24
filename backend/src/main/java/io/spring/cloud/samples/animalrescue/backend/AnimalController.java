@@ -32,6 +32,8 @@ public class AnimalController {
 
 	@GetMapping("/whoami")
 	public String whoami(Principal principal) {
+		LOGGER.info("Received whoami request");
+
 		if (principal == null) {
 			return "";
 		}

@@ -40,8 +40,8 @@ services:
     environment:
       - DEBUG=true
       - PORT=8080
-      - REACT_APP_LOGIN_URI=http://localhost:8080/login
-      - REACT_APP_LOGOUT_URI=http://localhost:8080/logout
+      - REACT_APP_LOGIN_URI=localhost:8080/login
+      - REACT_APP_LOGOUT_URI=localhost:8080/logout
     networks:
       ldap_net:
         ipv4_address: 172.28.1.11

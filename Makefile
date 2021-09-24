@@ -9,6 +9,8 @@ JAVA_VER := 11.0.11.hs-adpt
 SDKMAN_EXISTS := @printf "sdkman"
 NODE_EXISTS := @printf "npm"
 
+DOCKER_REGISTRY := docker.io
+
 define my_echo
 	@echo '$(1) $(2)'
 endef
@@ -39,6 +41,7 @@ ifeq ($(strip $(NODE_WHICH)),)
 endif
 
 # nvm current
+# nvm install 14.17.6
 # nvm alias default 14.17.6
 # nvm use 14.17.6
 
@@ -81,12 +84,17 @@ build-frontend: check
 	@./gradlew :frontend:assemble -x test
 
 #build-frontend-image: @ Build frontend Docker image
-build-frontend-image: build-frontend
+build-frontend-image: check
 #	@pack build andriykalashnykov/animal-rescue-frontend:latest --env BP_NODE_RUN_SCRIPTS=build --buildpack gcr.io/paketo-buildpacks/nodejs --env APP_ROOT=build --env BP_NGINX_VERSION=1.21.3 --env PORT=8080 --buildpack paketo-buildpacks/nginx --buildpack paketo-community/staticfile --env BP_NODE_RUN_SCRIPTS=build --env NODE_VERBOSE=true --env BP_NODE_VERSION=14.17.6 --builder=paketobuildpacks/builder:base --path=./frontend
 	@docker build frontend -t andriykalashnykov/animal-rescue-frontend:latest
 
+#run-frontend-image: @ Run frontend Docker image
+run-frontend-image: build-frontend-image
+#	@docker run --rm --interactive --tty --init --env PORT=8080 --publish 8080:8080 --env REACT_APP_LOGIN_URI=http://localhost:8080/login --env REACT_APP_LOGOUT_URI=http://localhost:8080/logout andriykalashnykov/animal-rescue-frontend:latest
+	@docker run --rm --interactive --tty --init --env PORT=8080 --entrypoint bash --publish 3000:8080 andriykalashnykov/animal-rescue-frontend:latest
+
 #start-app: @ Start frontend + backend
-start-app: check build-backend-image build-frontend
+start-app: check build-backend build-frontend
 	@./scripts/local.sh start --quiet
 
 #run-e2e: @ Run e2e: frontend + backend
@@ -101,10 +109,33 @@ start-local-containers: check
 stop-local-containers: check
 	@cd ./docker-compose && docker-compose down
 
+#login: @ Login to a registry
+login: check
+	@docker login --username $$DOCKER_LOGIN --password $$DOCKER_PWD $$DOCKER_REGISTRY
+
+#push-backend-image: @ Push backend image to registry
+push-backend-image: login build-backend-image
+	@docker push andriykalashnykov/animal-rescue-backend:latest
+
+#push-frontend-image: @ Push frontend image to registry
+push-frontend-image: login build-frontend-image
+	@docker push andriykalashnykov/animal-rescue-frontend:latest
+
+#deploy: @ Deploy containers to K8s
+deploy: check
+	@./scripts/local.sh deploy
+
+#undeploy: @ Undeploy containers from K8s
+undeploy: check
+	@./scripts/local.sh undeploy
+
+#redeploy: @ Redeploy containers to K8s
+redeploy: check undeploy build-backend-image push-backend-image build-frontend-image push-frontend-image
+	@./scripts/local.sh deploy
+
 test: check
 	$(call my_echo,John Doe,101)
 
-# docker run --rm --interactive --tty --init --env PORT=8080 --entrypoint bash --publish 3000:8080 andriykalashnykov/animal-rescue-frontend:latest
 # http://localhost:3000/rescue/
-
-# wait-on tcp:8080 &&
+# wait-on tcp:8080 && REACT_APP_LOGIN_URI=http://localhost:8080/login REACT_APP_LOGOUT_URI=http://localhost:8080/logout
+#  "proxy": "http://localhost:8080",
