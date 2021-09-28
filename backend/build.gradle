@@ -1,5 +1,3 @@
-import org.springframework.boot.buildpack.platform.build.PullPolicy.*
-
 plugins {
 	id 'org.springframework.boot' version '2.5.4'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
@@ -76,14 +74,12 @@ dependencyManagement {
 // https://docs.spring.io/spring-boot/docs/current/gradle-plugin/reference/htmlsingle/
 
 tasks.bootJar {
-//	classpath = ""
 	layered {
 		enabled = true
 	}
 }
 
 tasks.bootBuildImage {
-	def defprofile = '''default-zzz'''
 	pullPolicy = "IF_NOT_PRESENT"
 	cleanCache = false
 	verboseLogging = true
@@ -95,7 +91,7 @@ tasks.bootBuildImage {
 			"BP_DEBUG_ENABLED" : "false",
 			"BPE_DELIM_JAVA_TOOL_OPTIONS" : " ",
 			"BPE_APPEND_JAVA_TOOL_OPTIONS" : "-XX:+HeapDumpOnOutOfMemoryError -XX:UseSSE=2 -Dspring.profiles.active=default"
-//			"SPRING_PROFILES_ACTIVE" : "default-zzz"
+//			"SPRING_PROFILES_ACTIVE" : "default"
 	]
     builder = "paketobuildpacks/builder:base"
 	buildpacks = [
