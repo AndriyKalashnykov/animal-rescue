@@ -7,7 +7,7 @@ RUN $APT update && $APT upgrade && $APT install bash curl wget
 COPY build/ /usr/share/nginx/html/rescue
 COPY build/ /usr/share/nginx/html
 RUN rm /etc/nginx/conf.d/default.conf
-COPY nginx/nginx-k8s.conf /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 RUN chown -R nginx:nginx /usr/share/nginx
 
 #FROM node:14.17.6
