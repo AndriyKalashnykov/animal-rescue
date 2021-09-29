@@ -5,10 +5,21 @@ management:
   endpoints:
     web:
       exposure:
-        include: "*"
+        include: "*,wavefront"
+  metrics:
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true
+        http.client.requests: true
+
+wavefront:
+  freemium-account: true
+  application:
+    name: animal-rescue
+    service: backend
 
 logging.level:
-  org.springframework.data: debug
+  org.springframework: INFO
 
 spring:
   security:

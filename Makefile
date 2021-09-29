@@ -56,7 +56,7 @@ check: deps-check
 
 #build-backend: @ Build backend
 build-backend: check
-	@./gradlew :backend:build -x test
+	@./gradlew :backend:clean :backend:build -x test
 
 #test-backend: @ Test backend
 test-backend: check
@@ -147,3 +147,4 @@ test: check
 #npm ci --production
 #rm -rf node_modules
 #npm cache clean -f
+#cat rm ~/.wavefront_freemium
