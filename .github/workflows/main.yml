@@ -101,14 +101,24 @@ jobs:
         run: |
           ./scripts/local.sh init
           ./gradlew :frontend:assemble
-      - name: Build frontend image
-        uses: mamezou-tech/buildpacks-action@master
+      - name:  Build frontend image
+        uses: docker/build-push-action@v2.7.0
         with:
-          image: ${{ secrets.DOCKERHUB_USERNAME }}/animal-rescue-frontend
-          path: frontend
-          builder: gcr.io/paketo-buildpacks/builder:base
-          env: "BP_NODE_RUN_SCRIPTS=build BP_NODE_VERSION=14.17.6"
-      - name: Push frontend image
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/animal-rescue-frontend:latest
+          context: frontend
+          file:  frontend/Dockerfile
+          platforms: linux/amd64
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/animal-rescue-frontend:latest
+          cache-from: ${{ secrets.DOCKERHUB_USERNAME }}/animal-rescue-frontend-cache:latest
+          cache-to: ${{ secrets.DOCKERHUB_USERNAME }}/danimal-rescue-frontend-cache:latest
+#      - name: Build frontend image
+#        uses: mamezou-tech/buildpacks-action@master
+#        with:
+#          image: ${{ secrets.DOCKERHUB_USERNAME }}/animal-rescue-frontend
+#          path: frontend
+#          builder: gcr.io/paketo-buildpacks/builder:base
+#          env: "BP_NODE_RUN_SCRIPTS=build BP_NODE_VERSION=14.17.6"
+#      - name: Push frontend image
+#        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/animal-rescue-frontend:latest
 
 

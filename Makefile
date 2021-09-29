@@ -141,9 +141,9 @@ test: check
 #  "proxy": "http://localhost:8080",
 #http://animal-rescue-backend.animal-rescue.svc.cluster.local
 
-#    "development": [
-#      ">0.3%",
-#      "not ie 11",
-#      "not dead",
-#      "not op_mini all"
-#    ]
+#npm --depth 20 update --save caniuse-lite browserslist
+#npm install browserslist@4.17.1 --save
+#npm update ssri --depth 5
+#npm ci --production
+#rm -rf node_modules
+#npm cache clean -f
