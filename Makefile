@@ -62,9 +62,13 @@ build-backend: check
 test-backend: check
 	@./gradlew :backend:test
 
-#run-backend: @ Run backend
+#run-backend: @ Run backend without TO
 run-backend: check build-backend
 	@./gradlew :backend:bootRun -x test --args='--spring.profiles.active=default'
+
+#run-backend-to: @ Run backend with TO
+run-backend-to: check build-backend
+	@./gradlew :backend:bootRun -x test -Pto --args='--spring.profiles.active=to'
 
 #stop-app: @ Stop backend + frontend
 stop-app: check

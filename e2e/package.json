@@ -9,13 +9,17 @@
     "test": "wait-on tcp:8080 && wait-on tcp:3000 && cypress run"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "cypress": "^5.0.0",
     "eslint": "^7.7.0",
     "eslint-plugin-cypress": "^2.11.1",
     "wait-on": "^5.2.0"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "author": "AndriyKalashnykov@gmail.com",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AndriyKalashnykov/animal-rescue.git"
+  }
 }

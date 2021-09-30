@@ -40,5 +40,11 @@
       "not op_mini all"
     ]
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "author": "AndriyKalashnykov@gmail.com",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AndriyKalashnykov/animal-rescue.git"
+  }
 }

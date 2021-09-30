@@ -1,0 +1,16 @@
+ext {
+    set('wavefrontVersion', "2.2.0")
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "com.wavefront:wavefront-spring-boot-bom:${wavefrontVersion}"
+    }
+}
+
+dependencies {
+    //	wavefront TO
+    implementation 'com.wavefront:wavefront-spring-boot-starter'
+    //	https://mvnrepository.com/artifact/io.opentracing.contrib/opentracing-spring-cloud-starter
+    implementation 'io.opentracing.contrib:opentracing-spring-cloud-starter:0.5.9'
+}

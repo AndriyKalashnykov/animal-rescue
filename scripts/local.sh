@@ -48,7 +48,6 @@ startBackend() {
     ./gradlew :backend:bootRun > "$ROOT_DIR/scripts/out/backend_output.log" &
   else
     ./gradlew :backend:bootRun &
-#    curl -s http://localhost:8080/actuator/health | jq .
   fi
 }
 
@@ -89,6 +88,13 @@ undeploy-k8s() {
   kapp delete -a animal-rescue --yes
 }
 
+curl-backend() {
+  curl -s http://localhost:8080/actuator/health | jq .
+  curl -s http://localhost:8080/animals | jq .
+#  curl -X POST -s http://localhost:8080/animals/0/adoption-requests | jq .
+  curl -s http://localhost:8080/whoami | jq .
+}
+
 trap stop SIGINT
 
 case $1 in
@@ -122,6 +128,9 @@ deploy)
   ;;
 undeploy)
   undeploy-k8s
+  ;;
+curl-backend)
+  curl-backend
   ;;
 *)
   echo 'Unknown command. Please specify "init", "backend", "ci", "e2e", "start( --quiet)", or "stop"'
