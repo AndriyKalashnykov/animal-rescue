@@ -21,7 +21,7 @@ if (project.hasProperty(toProfile)) {
 }
 
 ext {
-	set('springCloudVersion', "Hoxton.SR12")
+	set('springCloudVersion', "2020.0.4")
 }
 
 configurations {

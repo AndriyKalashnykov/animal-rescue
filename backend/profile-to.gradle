@@ -1,16 +1,30 @@
+// https://docs.wavefront.com/wavefront_springboot.html
+
 ext {
     set('wavefrontVersion', "2.2.0")
+    // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-dependencies
+    set('springCloudVersion', "2020.0.4")
+
 }
 
 dependencyManagement {
     imports {
-        mavenBom "com.wavefront:wavefront-spring-boot-bom:${wavefrontVersion}"
+        // wavefront
+        mavenBom "com.wavefront:wavefront-spring-boot-bom:$wavefrontVersion"
+
+        // sleuth
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion"
     }
 }
 
 dependencies {
-    //	wavefront TO
+    // wavefront
     implementation 'com.wavefront:wavefront-spring-boot-starter'
-    //	https://mvnrepository.com/artifact/io.opentracing.contrib/opentracing-spring-cloud-starter
-    implementation 'io.opentracing.contrib:opentracing-spring-cloud-starter:0.5.9'
+
+    // sleuth
+     implementation 'org.springframework.cloud:spring-cloud-starter-sleuth'
+
+    // OpenTracing
+    // https://mvnrepository.com/artifact/io.opentracing.contrib/opentracing-spring-cloud-starter
+    // implementation 'io.opentracing.contrib:opentracing-spring-cloud-starter:0.5.9'
 }

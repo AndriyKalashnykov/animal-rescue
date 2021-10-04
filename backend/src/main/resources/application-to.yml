@@ -1,5 +1,9 @@
 management:
   endpoint:
+    info:
+      enabled: true
+    loggers:
+      enabled: true
     health:
       show-details: always
   endpoints:
@@ -11,6 +15,10 @@ management:
       percentiles-histogram:
         http.server.requests: true
         http.client.requests: true
+#    export:
+#      wavefront:
+#        api-token: ""
+#        uri: "https://wavefront.surf"
 
 wavefront:
   freemium-account: true
@@ -18,8 +26,13 @@ wavefront:
     name: animal-rescue
     service: backend
 
-logging.level:
-  org.springframework: INFO
+logging:
+  pattern:
+    console: "%clr(%d{YYYY-MM-dd E HH:mm:ss.SSS}){faint} %clr([traceid=%X{traceId:-} spanid=%X{spanId:-} parentspanid=%X{parentId:-}]){faint} %clr(%-5p) %clr(${PID}){faint} %clr([%8.15t]){faint} %clr(%c{1.}:%L){cyan} %clr(:){red} %clr(%m){faint}%n"
+  level:
+    ROOT: "INFO"
+    org.springframework: "INFO"
+    web.servlet.DispatcherServlet: "DEBUG"
 
 spring:
   security:
@@ -27,3 +40,6 @@ spring:
       resourceserver:
         jwt:
           jwk-set-uri: http://any.uaa.uri/token_keys
+  output:
+    ansi:
+      enabled: always
