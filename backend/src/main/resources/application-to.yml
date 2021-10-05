@@ -17,8 +17,10 @@ management:
         http.client.requests: true
 #    export:
 #      wavefront:
-#        api-token: ""
+#        api-token: "531424c6-bc68-49e7-ada7-92cd12149957"
 #        uri: "https://wavefront.surf"
+
+# https://wavefront.surf/us/DhHT9951jD
 
 wavefront:
   freemium-account: true

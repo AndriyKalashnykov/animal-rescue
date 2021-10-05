@@ -30,6 +30,11 @@ public class AnimalController {
 		this.animalRepository = animalRepository;
 	}
 
+	@GetMapping("/hello") public String hello() {
+		LOGGER.info("Received hello request");
+		return "Hello World";
+	}
+
 	@GetMapping("/whoami")
 	public String whoami(Principal principal) {
 		LOGGER.info("Received whoami request");

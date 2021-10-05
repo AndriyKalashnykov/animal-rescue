@@ -89,10 +89,11 @@ undeploy-k8s() {
 }
 
 curl-backend() {
-  curl -s http://localhost:8080/actuator/health | jq .
   curl -s http://localhost:8080/animals | jq .
-#  curl -X POST -s http://localhost:8080/animals/0/adoption-requests | jq .
+  curl -s http://localhost:8080/hello
   curl -s http://localhost:8080/whoami | jq .
+  curl -s http://localhost:8080/actuator/health | jq .
+#  curl -X POST -s http://localhost:8080/animals/0/adoption-requests | jq .
 }
 
 trap stop SIGINT
