@@ -34,9 +34,14 @@ public class AnimalController {
 		this.animalRepository = animalRepository;
 		this.adoptionRequestRepository = adoptionRequestRepository;
 	}
+	@GetMapping("/hello") public String hello() {
+		LOGGER.info("Received hello request");
+		return "Hello World";
+	}
 
 	@GetMapping("/whoami")
 	public String whoami(Principal principal) {
+		LOGGER.info("Received whoami request");
 		if (principal == null) {
 			return "";
 		}
