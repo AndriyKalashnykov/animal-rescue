@@ -12,6 +12,8 @@ public class AdoptionRequest {
 
 	private String notes;
 
+	private Long animal;
+
 	@Override
 	public String toString() {
 		return "AdoptionRequest{" +
@@ -19,6 +21,7 @@ public class AdoptionRequest {
 			", adopterName='" + adopterName + '\'' +
 			", email='" + email + '\'' +
 			", notes='" + notes + '\'' +
+			", animal='" + animal + '\'' +
 			'}';
 	}
 
@@ -52,6 +55,14 @@ public class AdoptionRequest {
 
 	public void setNotes(String notes) {
 		this.notes = notes;
+	}
+
+	public Long getAnimal() {
+		return animal;
+	}
+
+	public void setAnimal(Long animal) {
+		this.animal = animal;
 	}
 
 }

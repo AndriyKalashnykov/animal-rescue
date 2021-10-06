@@ -2,7 +2,6 @@ package io.spring.cloud.samples.animalrescue.backend;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -45,39 +44,39 @@ class AnimalControllerTest {
 	}
 
 	private int getAdoptionRequestCountForAnimalId1() {
-		return animalRepository.findById(1L).get().getAdoptionRequests().size();
+		return adoptionRequestRepository.findByAnimal(1L).collectList().block().size();
 	}
 
 	@Test
 	@WithMockUser(username = "test-user", authorities = {"adoption.request"})
 	void getUserName() {
 		webTestClient
-			.get()
-			.uri("/whoami")
-			.exchange()
-			.expectStatus().isOk()
-			.expectBody(String.class)
-			.isEqualTo("test-user");
+				.get()
+				.uri("/whoami")
+				.exchange()
+				.expectStatus().isOk()
+				.expectBody(String.class)
+				.isEqualTo("test-user");
 	}
 
 	@Test
 	void getAllAnimals() {
 		webTestClient
-			.get()
-			.uri("/animals")
-			.exchange()
-			.expectStatus().isOk()
-			.expectBody()
-			.jsonPath("$.length()").isEqualTo(10)
-			.jsonPath("$[0].id").isEqualTo(1)
-			.jsonPath("$[0].name").isEqualTo("Chocobo")
-			.jsonPath("$[0].avatarUrl").isNotEmpty()
-			.jsonPath("$[0].description").isNotEmpty()
-			.jsonPath("$[0].rescueDate").isNotEmpty()
-			.jsonPath("$[0].adoptionRequests.length()").isEqualTo(currentAdoptionRequestCountForAnimalId1)
-			.jsonPath("$[0].adoptionRequests[0].adopterName").isNotEmpty()
-			.jsonPath("$[0].adoptionRequests[0].email").isNotEmpty()
-			.jsonPath("$[0].adoptionRequests[0].notes").isNotEmpty();
+				.get()
+				.uri("/animals")
+				.exchange()
+				.expectStatus().isOk()
+				.expectBody()
+				.jsonPath("$.length()").isEqualTo(10)
+				.jsonPath("$[0].id").isEqualTo(1)
+				.jsonPath("$[0].name").isEqualTo("Chocobo")
+				.jsonPath("$[0].avatarUrl").isNotEmpty()
+				.jsonPath("$[0].description").isNotEmpty()
+				.jsonPath("$[0].rescueDate").isNotEmpty()
+				.jsonPath("$[0].adoptionRequests.length()").isEqualTo(currentAdoptionRequestCountForAnimalId1)
+				.jsonPath("$[0].adoptionRequests[0].adopterName").isNotEmpty()
+				.jsonPath("$[0].adoptionRequests[0].email").isNotEmpty()
+				.jsonPath("$[0].adoptionRequests[0].notes").isNotEmpty();
 	}
 
 	@Nested
@@ -92,17 +91,17 @@ class AnimalControllerTest {
 			adopt(testEmail, testNotes);
 
 			webTestClient
-				.get()
-				.uri("/animals")
-				.exchange()
-				.expectStatus().isOk()
-				.expectBody()
-				.jsonPath("$[0].id").isEqualTo(1)
-				.jsonPath("$[0].name").isEqualTo("Chocobo")
-				.jsonPath("$[0].adoptionRequests.length()").isEqualTo(currentAdoptionRequestCountForAnimalId1 + 1)
-				.jsonPath("$[0].adoptionRequests[*].adopterName").value(hasItem("test-user-1"))
-				.jsonPath("$[0].adoptionRequests[*].email").value(hasItem(testEmail))
-				.jsonPath("$[0].adoptionRequests[*].notes").value(hasItem(testNotes));
+					.get()
+					.uri("/animals")
+					.exchange()
+					.expectStatus().isOk()
+					.expectBody()
+					.jsonPath("$[0].id").isEqualTo(1)
+					.jsonPath("$[0].name").isEqualTo("Chocobo")
+					.jsonPath("$[0].adoptionRequests.length()").isEqualTo(currentAdoptionRequestCountForAnimalId1 + 1)
+					.jsonPath("$[0].adoptionRequests[*].adopterName").value(hasItem("test-user-1"))
+					.jsonPath("$[0].adoptionRequests[*].email").value(hasItem(testEmail))
+					.jsonPath("$[0].adoptionRequests[*].notes").value(hasItem(testNotes));
 		}
 
 		@Test
@@ -114,11 +113,11 @@ class AnimalControllerTest {
 			Map<String, String> requestBody = getRequestBody(testEmail, testNotes);
 
 			webTestClient
-				.post()
-				.uri("/animals/1000/adoption-requests")
-				.body(BodyInserters.fromValue(requestBody))
-				.exchange()
-				.expectStatus().isBadRequest();
+					.post()
+					.uri("/animals/1000/adoption-requests")
+					.body(BodyInserters.fromValue(requestBody))
+					.exchange()
+					.expectStatus().isBadRequest();
 		}
 	}
 
@@ -135,17 +134,17 @@ class AnimalControllerTest {
 			long newId = getNewlyCreatedRequestId(1L, "test-user-2");
 
 			webTestClient
-				.put()
-				.uri("/animals/1/adoption-requests/" + newId)
-				.body(BodyInserters.fromValue(getRequestBody(testEmail, testNotes)))
-				.exchange()
-				.expectStatus().isOk();
+					.put()
+					.uri("/animals/1/adoption-requests/" + newId)
+					.body(BodyInserters.fromValue(getRequestBody(testEmail, testNotes)))
+					.exchange()
+					.expectStatus().isOk();
 
-			Optional<AdoptionRequest> modified = adoptionRequestRepository.findById(newId);
-			assertThat(modified).isPresent();
-			assertThat(modified.get().getEmail()).isEqualTo(testEmail);
-			assertThat(modified.get().getNotes()).isEqualTo(testNotes);
-			assertThat(modified.get().getAdopterName()).isEqualTo("test-user-2");
+			AdoptionRequest modified = adoptionRequestRepository.findById(newId).block();
+			assertThat(modified).isNotNull();
+			assertThat(modified.getEmail()).isEqualTo(testEmail);
+			assertThat(modified.getNotes()).isEqualTo(testNotes);
+			assertThat(modified.getAdopterName()).isEqualTo("test-user-2");
 			assertThat(getAdoptionRequestCountForAnimalId1()).isEqualTo(currentAdoptionRequestCountForAnimalId1 + 1);
 		}
 
@@ -158,11 +157,11 @@ class AnimalControllerTest {
 			Map<String, String> requestBody = getRequestBody(testEmail, testNotes);
 
 			webTestClient
-				.put()
-				.uri("/animals/1/adoption-requests/2")
-				.body(BodyInserters.fromValue(requestBody))
-				.exchange()
-				.expectStatus().isForbidden();
+					.put()
+					.uri("/animals/1/adoption-requests/2")
+					.body(BodyInserters.fromValue(requestBody))
+					.exchange()
+					.expectStatus().isForbidden();
 		}
 
 		@Test
@@ -174,11 +173,11 @@ class AnimalControllerTest {
 			Map<String, String> requestBody = getRequestBody(testEmail, testNotes);
 
 			webTestClient
-				.put()
-				.uri("/animals/1000/adoption-requests/2")
-				.body(BodyInserters.fromValue(requestBody))
-				.exchange()
-				.expectStatus().isBadRequest();
+					.put()
+					.uri("/animals/1000/adoption-requests/2")
+					.body(BodyInserters.fromValue(requestBody))
+					.exchange()
+					.expectStatus().isBadRequest();
 		}
 
 		@Test
@@ -190,11 +189,11 @@ class AnimalControllerTest {
 			Map<String, String> requestBody = getRequestBody(testEmail, testNotes);
 
 			webTestClient
-				.put()
-				.uri("/animals/1/adoption-requests/2000")
-				.body(BodyInserters.fromValue(requestBody))
-				.exchange()
-				.expectStatus().isBadRequest();
+					.put()
+					.uri("/animals/1/adoption-requests/2000")
+					.body(BodyInserters.fromValue(requestBody))
+					.exchange()
+					.expectStatus().isBadRequest();
 		}
 	}
 
@@ -208,12 +207,12 @@ class AnimalControllerTest {
 			long newId = getNewlyCreatedRequestId(1L, "test-user-3");
 
 			webTestClient
-				.delete()
-				.uri("/animals/1/adoption-requests/" + newId)
-				.exchange()
-				.expectStatus().isOk();
+					.delete()
+					.uri("/animals/1/adoption-requests/" + newId)
+					.exchange()
+					.expectStatus().isOk();
 
-			assertThat(adoptionRequestRepository.findById(newId)).isNotPresent();
+			assertThat(adoptionRequestRepository.findById(newId).block()).isNull();
 			assertThat(getAdoptionRequestCountForAnimalId1()).isEqualTo(currentAdoptionRequestCountForAnimalId1);
 		}
 
@@ -221,30 +220,30 @@ class AnimalControllerTest {
 		@WithMockUser(username = "test-user-3", authorities = { "adoption.request" })
 		void failsIfNotTheOriginalRequester() {
 			webTestClient
-				.delete()
-				.uri("/animals/1/adoption-requests/3")
-				.exchange()
-				.expectStatus().isForbidden();
+					.delete()
+					.uri("/animals/1/adoption-requests/3")
+					.exchange()
+					.expectStatus().isForbidden();
 		}
 
 		@Test
 		@WithMockUser(username = "test-user-3", authorities = { "adoption.request" })
 		void failsIfAnimalNotFound() {
 			webTestClient
-				.delete()
-				.uri("/animals/1000/adoption-requests/3")
-				.exchange()
-				.expectStatus().isBadRequest();
+					.delete()
+					.uri("/animals/1000/adoption-requests/3")
+					.exchange()
+					.expectStatus().isBadRequest();
 		}
 
 		@Test
 		@WithMockUser(username = "test-user-3", authorities = { "adoption.request" })
 		void failsIfAdoptionRequestNotFound() {
 			webTestClient
-				.delete()
-				.uri("/animals/1/adoption-requests/3000")
-				.exchange()
-				.expectStatus().isBadRequest();
+					.delete()
+					.uri("/animals/1/adoption-requests/3000")
+					.exchange()
+					.expectStatus().isBadRequest();
 		}
 	}
 
@@ -252,11 +251,11 @@ class AnimalControllerTest {
 		Map<String, String> requestBody = getRequestBody(testEmail, testNotes);
 
 		webTestClient
-			.post()
-			.uri("/animals/1/adoption-requests")
-			.body(BodyInserters.fromValue(requestBody))
-			.exchange()
-			.expectStatus().isCreated();
+				.post()
+				.uri("/animals/1/adoption-requests")
+				.body(BodyInserters.fromValue(requestBody))
+				.exchange()
+				.expectStatus().isCreated();
 	}
 
 	private Map<String, String> getRequestBody(String testEmail, String testNotes) {
@@ -267,15 +266,11 @@ class AnimalControllerTest {
 	}
 
 	private long getNewlyCreatedRequestId(long animalId, String adopterName) {
-		return animalRepository
-			.findById(animalId)
-			.get()
-			.getAdoptionRequests()
-			.stream()
-			.filter(adoptionRequest -> adoptionRequest.getAdopterName().equals(adopterName))
-			.findAny()
-			.get()
-			.getId();
+		return adoptionRequestRepository
+				.findByAnimal(animalId)
+				.filter(ar -> ar.getAdopterName().equals(adopterName))
+				.blockFirst()
+				.getId();
 	}
 
 }

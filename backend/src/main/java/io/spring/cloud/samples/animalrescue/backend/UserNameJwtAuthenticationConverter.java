@@ -1,7 +1,6 @@
 package io.spring.cloud.samples.animalrescue.backend;
 
 import java.util.Collection;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +17,7 @@ class UserNameJwtAuthenticationConverter implements Converter<Jwt, AbstractAuthe
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserNameJwtAuthenticationConverter.class);
 
 	private final Converter<Jwt, Collection<GrantedAuthority>> jwtGrantedAuthoritiesConverter
-		= new JwtGrantedAuthoritiesConverter();
+			= new JwtGrantedAuthoritiesConverter();
 
 	@Override
 	public AbstractAuthenticationToken convert(Jwt jwt) {
@@ -27,10 +26,10 @@ class UserNameJwtAuthenticationConverter implements Converter<Jwt, AbstractAuthe
 	}
 
 	private String getUserName(Jwt jwt) {
-		if (jwt.containsClaim("name")) {
+		if (jwt.hasClaim("name")) {
 			LOGGER.info("Username from claim 'name'");
 			return jwt.getClaimAsString("name");
-		} else if (jwt.containsClaim("user_name")) {
+		} else if (jwt.hasClaim("user_name")) {
 			LOGGER.info("Username from claim 'user_name'");
 			return jwt.getClaimAsString("user_name");
 		} else {
