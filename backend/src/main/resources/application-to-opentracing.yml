@@ -15,10 +15,10 @@ management:
       percentiles-histogram:
         http.server.requests: true
         http.client.requests: true
-#    export:
-#      wavefront:
-#        api-token: "531424c6-bc68-49e7-ada7-92cd12149957"
-#        uri: "https://wavefront.surf"
+    export:
+      wavefront:
+        api-token: "531424c6-bc68-49e7-ada7-92cd12149957"
+        uri: "https://wavefront.surf"
 
 # https://wavefront.surf/us/DhHT9951jD
 
@@ -37,11 +37,6 @@ logging:
     web.servlet.DispatcherServlet: "DEBUG"
 
 spring:
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          jwk-set-uri: http://any.uaa.uri/token_keys
   output:
     ansi:
       enabled: always

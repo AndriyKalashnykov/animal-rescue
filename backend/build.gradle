@@ -11,13 +11,13 @@ version = '0.0.1-SNAPSHOT'
 java.sourceCompatibility = JavaVersion.VERSION_11
 java.targetCompatibility = JavaVersion.VERSION_11
 
-def toProfile='to'
-def currentProfile
-if (project.hasProperty(toProfile)) {
-	currentProfile = toProfile
-	apply from: rootProject.file('backend/profile-to.gradle');
-} else {
-	currentProfile = "default";
+def toSleuthProfile='to-sleuth'
+def toOpenTracingProfile='to-opentracing'
+if (project.hasProperty(toSleuthProfile)) {
+	apply from: rootProject.file("backend/${toSleuthProfile}.gradle");
+}
+if (project.hasProperty(toOpenTracingProfile)) {
+	apply from: rootProject.file("backend/${toOpenTracingProfile}.gradle");
 }
 
 ext {

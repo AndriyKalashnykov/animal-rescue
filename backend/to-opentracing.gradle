@@ -1,0 +1,17 @@
+// https://docs.wavefront.com/wavefront_springboot.html
+
+dependencyManagement {
+    imports {
+        // wavefront
+        mavenBom "com.wavefront:wavefront-spring-boot-bom:2.2.0"
+    }
+}
+
+dependencies {
+    // wavefront
+    implementation 'com.wavefront:wavefront-spring-boot-starter'
+
+    // OpenTracing
+    // https://mvnrepository.com/artifact/io.opentracing.contrib/opentracing-spring-cloud-starter
+     implementation 'io.opentracing.contrib:opentracing-spring-cloud-starter:0.5.9'
+}

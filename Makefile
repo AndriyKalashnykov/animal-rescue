@@ -22,7 +22,7 @@ help:
 	@echo
 	@echo "Commands :"
 	@echo
-	@grep -E '[a-zA-Z\.\-]+:.*?@ .*$$' $(MAKEFILE_LIST)| tr -d '#' | awk 'BEGIN {FS = ":.*?@ "}; {printf "\033[32m%-22s\033[0m - %s\n", $$1, $$2}'
+	@grep -E '[a-zA-Z\.\-]+:.*?@ .*$$' $(MAKEFILE_LIST)| tr -d '#' | awk 'BEGIN {FS = ":.*?@ "}; {printf "\033[32m%-26s\033[0m - %s\n", $$1, $$2}'
 
 deps-check:
 	@. $(SDKMAN)
@@ -66,9 +66,13 @@ test-backend: check
 run-backend: check build-backend
 	@./gradlew :backend:bootRun -x test --args='--spring.profiles.active=default'
 
-#run-backend-to: @ Run backend with TO
-run-backend-to: check build-backend
-	@./gradlew :backend:bootRun -x test -Pto --args='--spring.profiles.active=to'
+#run-backend-to-sleuth: @ Run backend with TO (sleuth)
+run-backend-to-sleuth: check build-backend
+	@./gradlew :backend:bootRun -x test -Pto-sleuth --args='--spring.profiles.active=to-sleuth'
+
+#run-backend-to-opentracing: @ Run backend with TO (OpenTracing)
+run-backend-to-opentracing: check build-backend
+	@./gradlew :backend:bootRun -x test -Pto-opentracing --args='--spring.profiles.active=to-opentracing'
 
 #stop-app: @ Stop backend + frontend
 stop-app: check
@@ -86,6 +90,10 @@ run-backend-image: build-backend-image
 #build-frontend: @ Build frontend
 build-frontend: check
 	@./gradlew :frontend:assemble -x test
+
+#run-frontend: @ Run frontend
+run-frontend: check
+	@cd frontend && npm start
 
 #build-frontend-image: @ Build frontend Docker image
 build-frontend-image: check

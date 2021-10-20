@@ -1,6 +1,8 @@
 name: Test All
 
-on: [push]
+on:
+  push:
+    branches: [ main ]
 
 jobs:
   backend-test:

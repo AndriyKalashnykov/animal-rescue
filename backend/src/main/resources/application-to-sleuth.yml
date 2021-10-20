@@ -1,0 +1,25 @@
+wavefront:
+  freemium-account: true
+  application:
+    name: animal-rescue
+    service: backend
+
+#management:
+#  metrics:
+#    export:
+#      wavefront:
+#        api-token: "$API_Token"
+#        uri: "$wavefront_instance"
+
+logging:
+  pattern:
+    console: "%clr(%d{YYYY-MM-dd E HH:mm:ss.SSS}){faint} %clr([traceid=%X{traceId:-} spanid=%X{spanId:-} parentspanid=%X{parentId:-}]){cyan} %clr(%-5p) %clr(${PID}){faint} %clr([%8.15t]){faint} %clr(%c{1.}:%L){cyan} %clr(:){red} %clr(%m){faint}%n"
+  level:
+    ROOT: "INFO"
+    org.springframework: "INFO"
+    web.servlet.DispatcherServlet: "DEBUG"
+
+spring:
+  output:
+    ansi:
+      enabled: always
