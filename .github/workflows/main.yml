@@ -103,16 +103,16 @@ jobs:
         run: |
           ./scripts/local.sh init
           ./gradlew :frontend:assemble
-      - name:  Build frontend image
-        uses: docker/build-push-action@v2.7.0
-        with:
-          context: frontend
-          file:  frontend/Dockerfile
-          platforms: linux/amd64
-          push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/animal-rescue-frontend:latest
-          cache-from: ${{ secrets.DOCKERHUB_USERNAME }}/animal-rescue-frontend-cache:latest
-          cache-to: ${{ secrets.DOCKERHUB_USERNAME }}/danimal-rescue-frontend-cache:latest
+#      - name:  Build frontend image
+#        uses: docker/build-push-action@v2.7.0
+#        with:
+#          context: frontend
+#          file:  frontend/Dockerfile
+#          platforms: linux/amd64
+#          push: true
+#          tags: ${{ secrets.DOCKERHUB_USERNAME }}/animal-rescue-frontend:latest
+#          cache-from: ${{ secrets.DOCKERHUB_USERNAME }}/animal-rescue-frontend-cache:latest
+#          cache-to: ${{ secrets.DOCKERHUB_USERNAME }}/danimal-rescue-frontend-cache:latest
 #      - name: Build frontend image
 #        uses: mamezou-tech/buildpacks-action@master
 #        with:

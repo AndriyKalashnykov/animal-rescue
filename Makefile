@@ -10,7 +10,7 @@ SDKMAN_EXISTS := @printf "sdkman"
 NODE_EXISTS := @printf "npm"
 
 
-#help: @ List available tasks on this project
+#help: @ List available tasks
 help:
 	@clear
 	@echo "Usage: make COMMAND"
@@ -66,6 +66,10 @@ build-frontend: check
 run-frontend: check
 	@cd frontend && npm start
 
+#run-e2e: @ Run end-to-end tests (backend + frontend)
+run-e2e: check build-backend build-frontend
+	@./scripts/local.sh ci
+
 #start-app: @ Start app (backend + frontend)
 start-app: check build-backend build-frontend
 	@./scripts/local.sh start --quiet
@@ -73,7 +77,3 @@ start-app: check build-backend build-frontend
 #stop-app: @ Stop app (backend + frontend)
 stop-app: check
 	@./scripts/local.sh stop
-
-#run-e2e: @ Run end-to-end test (backend + frontend)
-run-e2e: check build-backend build-frontend
-	@./scripts/local.sh ci
