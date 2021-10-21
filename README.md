@@ -8,10 +8,10 @@ Sample app for VMware Tanzu products. Features we demonstrate with this sample a
 
 ## Table of Contents
 
-* [Gateway and Animal Rescue application features](#gateway-and-animal-rescue-application-features)
+* [Animal Rescue application features](#animal-rescue-application-features)
 * [Development](#development)
 
-## Gateway and Animal Rescue application features
+## Animal Rescue application features
 
 Visit `https://localhost:3000/rescue`, you should see cute animal bios with the `Adopt` buttons disabled. All the information are fetched from a public `GET` backend endpoint `/animals`.
 
