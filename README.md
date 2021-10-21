@@ -4,7 +4,7 @@
 Sample app for VMware Tanzu products. Features we demonstrate with this sample app:
 
 
-![architecture](./docs/images/animal-rescue-arch.png)
+![architecture](./docs/images/animal-rescue-arch-simple.png)
 
 ## Table of Contents
 
@@ -20,7 +20,7 @@ Visit `https://localhost:3000/rescue`, you should see cute animal bios with the 
 Click the `Sign in to adopt` button on the top right corner, you should be redirected to the SSO login page if you haven't already logged in to SSO.
 There are two test accounts - `alice / test` and `bob / test`.
 
-![log in page](./docs/images/login.png)
+![log in page](./docs/images/login-simple.png)
 
 Once you logged in, you should see a greeting message regarding the username you log in with on the top right corner, and the `Adopt` buttons should be enabled.
 
