@@ -1,8 +1,12 @@
 # Animal Rescue
 [![Test All](https://github.com/AndriyKalashnykov/animal-rescue/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/AndriyKalashnykov/animal-rescue/actions/workflows/main.yml)
 
-Sample app for VMware Tanzu products. Features we demonstrate with this sample app:
+Sample app to demonstrate VMware opinionated way to build impactful applications by leveraging Tanzu products.
 
+Features we demonstrate with this sample app:
+
+* VMware Tanzu Observability - [Wavefront for Spring Boot](https://docs.wavefront.com/wavefront_springboot.html#step-3--view-your-data-on-wavefront)
+* Front end testing for the modern web - [Cypress](https://docs.cypress.io/guides/overview/why-cypress)
 
 ![architecture](./docs/images/animal-rescue-arch-simple.png)
 
