@@ -11,6 +11,7 @@ version = '0.0.1-SNAPSHOT'
 java.sourceCompatibility = JavaVersion.VERSION_11
 java.targetCompatibility = JavaVersion.VERSION_11
 
+// include conditional dependencies from an external file for Sleuth or OpenTracing
 def toSleuthProfile='to-sleuth'
 def toOpenTracingProfile='to-opentracing'
 if (project.hasProperty(toSleuthProfile)) {
