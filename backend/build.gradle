@@ -119,9 +119,10 @@ test {
 jacocoTestReport {
 	dependsOn test
     reports {
-        xml.enabled true
+        xml.required = true
 		xml.destination new File("${buildDir}/reports/jacoco/report.xml")
-		html.enabled false
-		csv.enabled false
+		html.required = true
+		html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
+		csv.required = false
     }
 }
