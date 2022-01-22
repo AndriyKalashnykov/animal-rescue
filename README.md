@@ -135,8 +135,6 @@ dependencies {
 Modfy Gradle project file [`to-opentracing.gradle`](https://github.com/AndriyKalashnykov/animal-rescue/blob/ecd35866f819307c572c15c87641a803b6efe1ca/backend/to-opentracing.gradle)
 
 ```gradle
-// https://docs.wavefront.com/wavefront_springboot.html
-
 dependencyManagement {
     imports {
         // wavefront
