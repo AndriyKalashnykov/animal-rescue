@@ -110,7 +110,7 @@ We also need to configure Wavefront dependencies based on how you want to send d
 
 Use Gradle project file [`to-sleuth.gradle`](https://github.com/AndriyKalashnykov/animal-rescue/blob/ecd35866f819307c572c15c87641a803b6efe1ca/backend/to-sleuth.gradle)
 
-```json
+```gradle
 dependencyManagement {
     imports {
         // wavefront
@@ -134,7 +134,7 @@ dependencies {
 
 Modfy Gradle project file [`to-opentracing.gradle`](https://github.com/AndriyKalashnykov/animal-rescue/blob/ecd35866f819307c572c15c87641a803b6efe1ca/backend/to-opentracing.gradle)
 
-```json
+```gradle
 // https://docs.wavefront.com/wavefront_springboot.html
 
 dependencyManagement {
