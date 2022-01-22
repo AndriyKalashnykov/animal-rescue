@@ -1,5 +1,3 @@
-// https://docs.wavefront.com/wavefront_springboot.html
-
 dependencyManagement {
     imports {
         // wavefront
