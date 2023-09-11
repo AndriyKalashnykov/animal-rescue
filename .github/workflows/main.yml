@@ -91,8 +91,8 @@ jobs:
           image: ${{ secrets.DOCKERHUB_USERNAME }}/animal-rescue-backend
           path: backend
           builder: gcr.io/paketo-buildpacks/builder:base
-      - name: Push backend image
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/animal-rescue-backend:latest
+#      - name: Push backend image
+#        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/animal-rescue-backend:latest
 
       - name: Setup Node
         uses: actions/setup-node@v3
