@@ -1,7 +1,7 @@
 .DEFAULT_GOAL := help
 
 SHELL := /bin/bash
-SDKMAN := $(HOME)/.sdkman/bin/sdkman-init.sh
+SDKMAN := ~/.sdkman/bin/sdkman-init.sh
 CURRENT_USER_NAME := $(shell whoami)
 
 JAVA_VER := 11.0.11.hs-adpt
@@ -39,41 +39,41 @@ check: deps-check
 	@printf "\n"
 
 #build-backend: @ Build backend
-build-backend: check
+build-backend: 
 	@./gradlew :backend:clean :backend:build -x test
 
 #test-backend: @ Test backend
-test-backend: check
+test-backend: 
 	@./gradlew :backend:test
 
 #run-backend: @ Run backend without TO
-run-backend: check build-backend
+run-backend:  build-backend
 	@./gradlew :backend:bootRun -x test --args='--spring.profiles.active=default'
 
 #run-backend-to-sleuth: @ Run backend with TO (Sleuth)
-run-backend-to-sleuth: check build-backend
+run-backend-to-sleuth:  build-backend
 	@./gradlew :backend:bootRun -x test -Pto-sleuth --args='--spring.profiles.active=to-sleuth'
 
 #run-backend-to-opentracing: @ Run backend with TO (OpenTracing)
-run-backend-to-opentracing: check build-backend
+run-backend-to-opentracing:  build-backend
 	@./gradlew :backend:bootRun -x test -Pto-opentracing --args='--spring.profiles.active=to-opentracing'
 
 #build-frontend: @ Build frontend
-build-frontend: check
+build-frontend: 
 	@./gradlew :frontend:assemble -x test
 
 #run-frontend: @ Run frontend
-run-frontend: check
+run-frontend: 
 	@cd frontend && npm start
 
 #run-e2e: @ Run end-to-end tests (backend + frontend)
-run-e2e: check build-backend build-frontend
+run-e2e: build-backend build-frontend
 	@./scripts/local.sh ci
 
 #start-app: @ Start app (backend + frontend)
-start-app: check build-backend build-frontend
+start-app:  build-backend build-frontend
 	@./scripts/local.sh start --quiet
 
 #stop-app: @ Stop app (backend + frontend)
-stop-app: check
+stop-app: 
 	@./scripts/local.sh stop
