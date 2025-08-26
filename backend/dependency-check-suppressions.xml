@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
+    
+    <!-- Example: Suppress a specific CVE for a specific dependency -->
+
+    <suppress>
+        <notes><![CDATA[
+            False positive - this vulnerability doesn't affect our usage
+        ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework/spring-core@.*$</packageUrl>
+        <cve>CVE-2022-22965</cve>
+    </suppress>
+
+    
+    <!-- Example: Suppress all CVEs below a certain score for a dependency -->
+
+    <suppress>
+        <notes><![CDATA[
+            Low severity vulnerabilities in test dependencies
+        ]]></notes>
+        <packageUrl regex="true">^pkg:maven/junit/junit@.*$</packageUrl>
+        <cvssBelow>4.0</cvssBelow>
+    </suppress>
+
+    
+    <!-- Example: Suppress by file name pattern -->
+    <!-- 
+    <suppress>
+        <notes><![CDATA[
+            Internal library - vulnerability not applicable
+        ]]></notes>
+        <filePath regex="true">.*internal-library.*\.jar</filePath>
+        <cve>CVE-2023-12345</cve>
+    </suppress>
+    -->
+
+</suppressions>
